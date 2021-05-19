@@ -14,29 +14,20 @@
         <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
         <script>
             $('document').ready(function() {
-                $('.main-view').hide();
-                $('.first-view').click(function() {
-                    $('.first-view').fadeOut(500, function() {
-                        $('.main-view').fadeIn(500);
+                $('.main-view').click(function() {
+                    $('.main-view').fadeOut(500, function() {
+                        location.href='/contents/index.php';
                     }); 
                 });
             });
         </script>
     </head>
     <body>
-        <div class='first-view'>
+        <div style='font-size: 30px;' class='main-view'>
+            <div>
             hi-jin Dev Blog
-        </div>
-        <div class='main-view'>
-            <form method='post' action='/user/login.php'>
-                <a href='/user/guest.php'>GUEST 계정으로 접속하기</a><br>
-                <input type="text" placeholder="아이디를 입력하세요." name="userid"><br>
-                <input type="password" placeholder="비밀번호를 입력하세요." name="userpw"><br>
-                <div style='display: flex; justify-content: space-between;'>
-                    <button style='flex: 1;' type="submit" class="btn btn-outline-primary">로그인</button>
-                    <button style='flex: 1;' type="button" class="btn btn-outline-primary" onclick="location.href='user/register.html'">회원가입</button>
-                </div>
-            </form>
+            </div>
+            <button onclick="location.href='/user/login.php'" type="button" class="btn btn-link">로그인</button>
         </div>
     </body>
 </html>

@@ -3,18 +3,9 @@ body {
     padding: 0;
 }
 
-.first-view {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    
-    font-size: 30px;
-}
-
 .main-view {
     display: flex;
+    flex-direction: column;
     width: 100vw;
     height: 100vh;
     justify-content: center;
