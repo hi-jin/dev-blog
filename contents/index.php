@@ -17,7 +17,7 @@
         </script>
     </head>
     <body>
-        <nav class="navbar navbar-light bg-light">
+        <nav style='position: fixed;' class="navbar navbar-light bg-light">
           <div class="container-fluid">
             <a class="navbar-brand" href='/index.php'>hi-jin dev blog</a>
               <div>
@@ -32,6 +32,14 @@
                 <button type="button" class="btn btn-outline-primary" onclick="location.href='/user/logout.php'">로그아웃</button>
               </div>
             </div>
+        </nav>
+        <nav style='width: 80vw; position: absolute; left: 50%; top: 50px; transform: translate(-50%)' class="navbar navbar-light">
+          <div class="container-fluid">
+            <form style='flex: 1;' class="d-flex">
+              <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">검색하기</button>
+            </form>
+          </div>
         </nav>
         <div class='main-view'>
         </div>
