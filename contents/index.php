@@ -23,7 +23,7 @@
                   }
                   $admin = $_SESSION['is_admin'];
                   if ($admin == 1) {
-                      $on_action = "location.href='/user/write.php'";
+                      $on_action = "location.href='/user/write.html'";
                       echo("<button type='button' onclick=location.href={$on_action} class='btn btn-outline-secondary'>글쓰기</button>");
                     }
                   if ( isset($_SESSION['user_name']) ) {   
