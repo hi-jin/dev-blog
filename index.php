@@ -25,7 +25,7 @@
     </head>
     <body>
         <div class='first-view'>
-            Hi-jin Dev Blog
+            hi-jin Dev Blog
         </div>
         <div class='main-view'>
             <form method='post' action='/user/login.php'>

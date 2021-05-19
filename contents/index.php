@@ -19,7 +19,7 @@
     <body>
         <nav class="navbar navbar-light bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand">hi-jin dev blog</a>
+            <a class="navbar-brand" href='/index.php'>hi-jin dev blog</a>
               <div>
                 <?php 
                   $username = $_SESSION['user_name'];
