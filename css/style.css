@@ -16,3 +16,9 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+.text-editor {
+    width: 80vw;
+    height: 60vh;
+    overflow-y: scroll;
+}
