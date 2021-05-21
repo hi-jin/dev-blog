@@ -13,7 +13,7 @@
         <link rel='stylesheet' href='/css/style.css'>
         <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
         <script>
-            $('document').ready(function() {
+            $(document).ready(function() {
                 $('.main-view').click(function() {
                     $('.main-view').fadeOut(500, function() {
                         location.href='/contents/index.php';

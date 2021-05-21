@@ -9,6 +9,51 @@
         <script src="https://kit.fontawesome.com/685c30fde6.js" crossorigin="anonymous"></script>
         <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
         <script>
+            var tag_divs = [];
+            var tags = [];
+            var tag_count = 0;
+            var tag_unum = 0;
+            $(document).ready(function() {
+                $('#submit').click(function() {
+                    $('#text-editor').val($('#text-editor-div').html());
+                });
+                $('#tag_input').keypress(function(event){
+                    if (event.keyCode == 13) {
+                        event.preventDefault();
+                        var tag = $('#tag_input').val();
+                        $('#tag_input').val('');
+                        if ( tag.trim() == "" ) {
+                            return;
+                        }
+                        if ( tag_count === 5 ) {
+                            alert("태그는 5개까지 설정할 수 있습니다.");
+                            return;
+                        }
+                        for (var i = 0; i < tags.length; i++) {
+                            if (tags[i] == tag) {
+                                return;
+                            }
+                        }
+                        var tag_idx = tag_unum++;
+                        tag_count++;
+                        var tag_div = $('<div></div>');
+                        tag_div.attr("onclick", "remove_tag(" + tag_idx + ")");
+                        tag_div.attr("class", "tag");
+                        tag_div.text(tag);
+                        tag_div.append($('<button type="button" class="btn-close" disabled aria-label="Close"></button>'));
+                        tags.push(tag);
+                        tag_divs.push(tag_div);
+                        $('#posting_tag').append(tag_div);
+                    }
+                });
+            });
+            
+            function remove_tag(idx) {
+                tag_divs[idx].remove();
+                tags[idx] = "";
+                tag_count--;
+            }
+            
             function create_table() {
                 var data = $('.text-editor').html()
                 var row = prompt("행 길이를 입력하세요.", '0');
@@ -33,18 +78,18 @@
             }
         </script>
         <style>
-            .main-view > div > a {
+            .main-view > form > div > div > a {
                 color: black;
             }
-              table {
+            table {
                 border-top: 1px solid #444444;
                 border-collapse: collapse;
-              }
-              th, td {
-                border-bottom: 1px solid #444444;
+            }
+            th, td {
+                border: 1px solid #444444;
                 padding: 10px;
-                min-width: 30px;
-              }
+                min-width: 50px;
+            }
         </style>
     </head>
     <body>
@@ -57,12 +102,19 @@
             </div>
         </nav>
         <div class='main-view'>
-            <div>
-                <a href='javascript:void(0);' onclick='change("bold");'><i class="fas fa-bold fa-2x"></i></a>
-                <a href='javascript:void(0);' onclick='create_table()'><i class="fas fa-table fa-2x"></i></a>
-            </div>
-            <form action='/user/write.php'>
-                <div contenteditable="true" class='text-editor bg-light' name='posting_text'></div>
+            <form method='post' action='/user/write.php'>
+                <input style="width: 80vw;" type="text" name="posting_title" placeholder="제목을 입력하세요."><br><br>
+                <input style="width: 80vw;" id='tag_input' type="text" placeholder="태그를 입력하고 Enter키를 누르세요."><br>
+                태그 : <div style="display: inline-block; margin: 5px 0px;" id='posting_tag' name="posting_tag"></div><br>
+                <div style="display: flex;">
+                    <div contenteditable="true" id='text-editor-div' class='text-editor bg-light'></div>
+                    <input id='text-editor' name='posting_text' type="hidden">
+                    <div style="display: flex; flex-direction: column; margin-left: 10px;">
+                        <a href='javascript:void(0);' onclick='change("bold");'><i class="fas fa-bold fa-2x"></i></a>
+                        <a href='javascript:void(0);' onclick='create_table()'><i class="fas fa-table fa-2x"></i></a>
+                    </div>
+                </div>
+                <input id='submit' class="btn btn-primary" type="submit" value="게시하기">
             </form>
         </div>
     </body>
