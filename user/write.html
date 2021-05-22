@@ -14,6 +14,19 @@
             var tag_count = 0;
             var tag_unum = 0;
             $(document).ready(function() {
+                $('#text-editor-div').keypress(function(event){
+                   if (event.keyCode == 13) {
+                       event.preventDefault();
+                       var sel = document.getSelection();
+                       range = sel.getRangeAt(0);
+                       br = document.createElement("br");
+                       textNode = document.createTextNode('\u200C');
+                       range.insertNode(br);
+                       range.collapse(false);
+                       range.insertNode(textNode);
+                       range.selectNodeContents(textNode);
+                   } 
+                });
                 $('#submit').click(function() {
                     $('#text-editor').val($('#text-editor-div').html());
                     var tags_str = ""
@@ -52,6 +65,21 @@
                     }
                 });
             });
+            function addText(addString) {
+                var element     =         document.getElementById("text-editor");
+                var strOriginal  =         element.innerHtml;
+                var iStartPos    =         element.selectionStart;
+                var iEndPos     =         element.selectionEnd;
+                var strFront     =         "";
+                var strEnd       =         "";
+
+                if(iStartPos == iEndPos) {
+                    strFront = strOriginal.substring(0, iStartPos);
+                    strEnd = strOriginal.substring(iStartPos, strOriginal.length);
+                } else return;
+                
+                element.value = strFront + addString + strEnd;
+            }
             
             function remove_tag(idx) {
                 tag_divs[idx].remove();

@@ -9,10 +9,24 @@
         <link rel='stylesheet' href='/css/style.css'>
         <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
         <script>
+            function deleteCard(no) {
+                $.ajax({
+                    url: "/user/deleteCard.php",
+                    type: "post",
+                    data: {"no": no},
+                }).done(function(data) {
+                    if (typeof parseInt(data) == "number") {
+                        $("div[no = " + data + "]").remove();
+                        alert("게시글이 삭제되었습니다.");
+                    } else {
+                        alert(data);
+                    }
+                });
+            }
         </script>
     </head>
     <body>
-        <nav style='position: fixed; width: 100vw;' class="navbar navbar-light bg-light">
+        <nav style='z-index: 100; position: fixed; width: 100vw;' class="navbar navbar-light bg-light">
           <div class="container-fluid">
             <a class="navbar-brand" href='/index.php'>hi-jin dev blog</a>
               <div>
@@ -39,7 +53,7 @@
               </div>
             </div>
         </nav>
-        <nav style='width: 80vw; position: fixed; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
+        <nav style='z-index: 100; width: 80vw; position: fixed; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
           <div class="container-fluid">
             <form style='flex: 1;' class="d-flex">
               <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search">
@@ -50,13 +64,21 @@
         <div class='main-view'>
             <?php
             $conn = mysqli_connect("localhost", "root", "1284", "blog", 3306);
-            $sql = "SELECT no, title, content, user_name, date, tag FROM board;";
+            $sql = "SELECT no, title, content, user_name, date, tag FROM board ORDER BY date DESC;";
             $result = mysqli_query($conn, $sql);
             
             while ($row = mysqli_fetch_assoc($result)) {
             ?>
-            <div class="card" style="width: 80vw;">
+            <div no="<?php echo $row['no']; ?>" class="card" style="width: 80vw;">
                 <div class="card-body">
+                    <?php
+                    $admin = $_SESSION['is_admin'];
+                  if ($admin == 1) {
+                      $no = $row['no'];
+                      echo("<button onclick='deleteCard({$no})'} style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
+                    }
+                    ?>
+                    
                     <h4 class="card-title"><?php echo $row['title'] ?></h5>
                     <h6 class="card-subtitle mb-2 text-muted"><?php echo substr(str_replace(";", ", ", $row['tag']), 0, -2) ?></h6>
                     <p><?php echo $row['content'] ?></p>

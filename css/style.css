@@ -11,7 +11,6 @@ body {
     width: 100vw;
     height: 100vh;
     align-items: center;
-    z-index: -999;
 }
 
 .full-screen {
