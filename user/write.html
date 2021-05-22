@@ -16,6 +16,11 @@
             $(document).ready(function() {
                 $('#submit').click(function() {
                     $('#text-editor').val($('#text-editor-div').html());
+                    var tags_str = ""
+                    for (var i = 0; i < tags.length; i++) {
+                        tags_str += tags[i] + ";";
+                    }
+                    $('#tag').val(tags_str);
                 });
                 $('#tag_input').keypress(function(event){
                     if (event.keyCode == 13) {
@@ -104,7 +109,9 @@
         <div class='main-view'>
             <form method='post' action='/user/write.php'>
                 <input style="width: 80vw;" type="text" name="posting_title" placeholder="제목을 입력하세요."><br><br>
-                <input style="width: 80vw;" id='tag_input' type="text" placeholder="태그를 입력하고 Enter키를 누르세요."><br>
+                <input style="width: 80vw;" id='tag_input' type="text" placeholder="태그를 입력하고 Enter키를 누르세요.">
+                <input type='hidden' name='tag' id='tag'>
+                <br>
                 태그 : <div style="display: inline-block; margin: 5px 0px;" id='posting_tag' name="posting_tag"></div><br>
                 <div style="display: flex;">
                     <div contenteditable="true" id='text-editor-div' class='text-editor bg-light'></div>
