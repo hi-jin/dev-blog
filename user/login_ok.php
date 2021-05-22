@@ -5,7 +5,7 @@
 
     $sql = "SELECT * FROM user WHERE user_id='{$userid}'";
     $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result);
+    $row = mysqli_fetch_assoc($result);
     
     if ($row['user_pw'] === $userpw) {
         session_start();

@@ -39,7 +39,7 @@
               </div>
             </div>
         </nav>
-        <nav style='width: 80vw; position: absolute; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
+        <nav style='width: 80vw; position: fixed; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
           <div class="container-fluid">
             <form style='flex: 1;' class="d-flex">
               <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search">
@@ -48,6 +48,25 @@
           </div>
         </nav>
         <div class='main-view'>
+            <?php
+            $conn = mysqli_connect("localhost", "root", "1284", "blog", 3306);
+            $sql = "SELECT no, title, content, user_name, date, tag FROM board;";
+            $result = mysqli_query($conn, $sql);
+            
+            while ($row = mysqli_fetch_assoc($result)) {
+            ?>
+            <div class="card" style="width: 80vw;">
+                <div class="card-body">
+                    <h4 class="card-title"><?php echo $row['title'] ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo substr(str_replace(";", ", ", $row['tag']), 0, -2) ?></h6>
+                    <p><?php echo $row['content'] ?></p>
+                    <p class="card-text"><?php echo $row['user_name'];?> - <?php echo $row['date'] ?></p>
+                </div>
+            </div>
+            <br>
+            <?php
+            }
+            ?>
         </div>
     </body>
 </html>
