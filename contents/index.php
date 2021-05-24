@@ -23,6 +23,21 @@
                     }
                 });
             }
+            
+            function searchCard() {
+                var keyWord = $('searchField').val();
+                loadContents(keyWord);
+            }
+            
+            function loadContents(keyWord) {
+                $.ajax({
+                    type: "GET",
+                    url: "/contents/contents.php",
+                    data: {key: keyWord},
+                }).done(function(data) {
+                    console.log(data.data.length);
+                });
+            }
         </script>
     </head>
     <body>
@@ -56,15 +71,16 @@
         <nav style='z-index: 100; width: 80vw; position: fixed; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
           <div class="container-fluid">
             <form style='flex: 1;' class="d-flex">
-              <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">검색하기</button>
+              <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search" id="searchField">
+              <button class="btn btn-outline-success" onClick="searchCard()">검색하기</button>
             </form>
           </div>
         </nav>
-        <div class='main-view'>
+        <div onload='loadContents()' class='main-view'>
             <?php
             $conn = mysqli_connect("localhost", "root", "1284", "blog", 3306);
-            $sql = "SELECT no, title, content, user_name, date, tag FROM board ORDER BY date DESC;";
+            $sql = "SELECT no, title, content, user_name, date, tag FROM board WHERE tag LIKE '%{$keyWord}%' OR title LIKE '%{$keyWord}%' ORDER BY date DESC;";
+            
             $result = mysqli_query($conn, $sql);
             
             while ($row = mysqli_fetch_assoc($result)) {
@@ -79,7 +95,7 @@
                     }
                     ?>
                     
-                    <h4 class="card-title"><?php echo $row['title'] ?></h5>
+                    <h4 class="card-title"><?php echo $row['title'] ?></h4>
                     <h6 class="card-subtitle mb-2 text-muted"><?php echo substr(str_replace(";", ", ", $row['tag']), 0, -2) ?></h6>
                     <p><?php echo $row['content'] ?></p>
                     <p class="card-text"><?php echo $row['user_name'];?> - <?php echo $row['date'] ?></p>
