@@ -79,7 +79,7 @@
     </head>
     <body>
         <nav style='z-index: 100; position: fixed; width: 100vw;' class="navbar navbar-light bg-light">
-          <div class="container-fluid">
+          <div style="padding: 0px 30px;" class="container-fluid">
             <a class="navbar-brand" href='/index.php'>hi-jin dev blog</a>
               <div>
                 <?php 

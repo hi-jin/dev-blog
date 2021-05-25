@@ -24,7 +24,7 @@ if ( isset($_SESSION['user_name']) ) {
                 <input type="password" placeholder="비밀번호를 입력하세요." name="userpw"><br>
                 <div style='display: flex; justify-content: space-between;'>
                     <button style='flex: 1;' type="submit" class="btn btn-outline-primary">로그인</button>
-                    <button style='flex: 1;' type="button" class="btn btn-outline-primary" onclick="location.href='user/register.html'">회원가입</button>
+                    <button style='flex: 1;' type="button" class="btn btn-outline-primary" onclick="location.href='/user/register.html'">회원가입</button>
                 </div>
             </form>
         </div>
