@@ -9,6 +9,9 @@
         <link rel='stylesheet' href='/css/style.css'>
         <script type='text/javascript' src="https://code.jquery.com/jquery.min.js"></script>
         <script>
+            $(document).ready(function() {
+                loadContents();
+            });
             function deleteCard(no) {
                 $.ajax({
                     url: "/user/deleteCard.php",
@@ -25,17 +28,51 @@
             }
             
             function searchCard() {
-                var keyWord = $('searchField').val();
+                var keyWord = $('#searchField').val().trim();
                 loadContents(keyWord);
+                $('#searchField').val('');
             }
             
             function loadContents(keyWord) {
                 $.ajax({
                     type: "GET",
                     url: "/contents/contents.php",
-                    data: {key: keyWord},
+                    data: {"key": keyWord},
                 }).done(function(data) {
-                    console.log(data.data.length);
+                    $('.main-view').html('');
+                    for (var i = 0; i < data.data.length; i++) {
+                        var no = data.data[i].no;
+                        var title = data.data[i].title;
+                        var content = data.data[i].content;
+                        var user_name = data.data[i].user_name;
+                        var date = data.data[i].date;
+                        var tag = data.data[i].tag;
+                        
+                        var card = $('<div no=' + no + ' class="card" style="width: 80vw;"></div>');
+                        var card_body = $('<div class="card-body"></div>');
+                        var delete_btn = $("<button onclick='deleteCard(" + no + ")'} style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
+                        var card_title = $('<h4 class="card-title">' + title + '</h4>');
+                        tag = tag.replace(/;/gi, ", ");
+                        tag = tag.substring(0, tag.length-2);
+                        var card_subtitle = $('<h6 class="card-subtitle mb-2 text-muted">' + tag + '</h6>')
+                        var content_body = $('<p>' + content + '</p>');
+                        var card_text = $('<p class="card-text">' + user_name + ' - ' + date + '</p>');
+                        
+                        var is_admin = <?php 
+                            if ( $_SESSION['is_admin'] == 1 ) echo 1;
+                            else echo 0;
+                            ?>;
+                        
+                        if (is_admin == 1) {
+                            delete_btn.appendTo(card_body);
+                        }
+                        card_title.appendTo(card_body);
+                        card_subtitle.appendTo(card_body);
+                        content_body.appendTo(card_body);
+                        card_text.appendTo(card_body);
+                        card_body.appendTo(card);
+                        card.appendTo($('.main-view'));
+                    }
                 });
             }
         </script>
@@ -70,41 +107,13 @@
         </nav>
         <nav style='z-index: 100; width: 80vw; position: fixed; left: 50%; top: 60px; transform: translate(-50%)' class="navbar navbar-light">
           <div class="container-fluid">
-            <form style='flex: 1;' class="d-flex">
-              <input style='flex: 1;' class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search" id="searchField">
+            <div style='flex: 1;' class="d-flex">
+              <input style='flex: 1;' onKeyPress="if (event.keyCode == 13) {searchCard();}" class="form-control me-2" type="search" placeholder="게시글 검색하기" aria-label="Search" id="searchField">
               <button class="btn btn-outline-success" onClick="searchCard()">검색하기</button>
-            </form>
+            </div>
           </div>
         </nav>
-        <div onload='loadContents()' class='main-view'>
-            <?php
-            $conn = mysqli_connect("localhost", "root", "1284", "blog", 3306);
-            $sql = "SELECT no, title, content, user_name, date, tag FROM board WHERE tag LIKE '%{$keyWord}%' OR title LIKE '%{$keyWord}%' ORDER BY date DESC;";
-            
-            $result = mysqli_query($conn, $sql);
-            
-            while ($row = mysqli_fetch_assoc($result)) {
-            ?>
-            <div no="<?php echo $row['no']; ?>" class="card" style="width: 80vw;">
-                <div class="card-body">
-                    <?php
-                    $admin = $_SESSION['is_admin'];
-                  if ($admin == 1) {
-                      $no = $row['no'];
-                      echo("<button onclick='deleteCard({$no})'} style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
-                    }
-                    ?>
-                    
-                    <h4 class="card-title"><?php echo $row['title'] ?></h4>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php echo substr(str_replace(";", ", ", $row['tag']), 0, -2) ?></h6>
-                    <p><?php echo $row['content'] ?></p>
-                    <p class="card-text"><?php echo $row['user_name'];?> - <?php echo $row['date'] ?></p>
-                </div>
-            </div>
-            <br>
-            <?php
-            }
-            ?>
+        <div class='main-view'>
         </div>
     </body>
 </html>
