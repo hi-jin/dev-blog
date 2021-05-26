@@ -72,6 +72,7 @@
                         card_text.appendTo(card_body);
                         card_body.appendTo(card);
                         card.appendTo($('.main-view'));
+                        $('.main-view').append($('<br>'));
                     }
                 });
             }
