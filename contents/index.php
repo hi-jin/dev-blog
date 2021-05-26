@@ -60,7 +60,8 @@
                         
                         var card = $('<div no=' + no + ' onclick="show_content(' + no + ')" class="card list-group-item-action" style="width: 80vw;"></div>');
                         var card_body = $('<div class="card-body"></div>');
-                        var delete_btn = $("<button onclick='deleteCard(" + no + ")' style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
+                        var delete_btn = $("<button title='게시글 삭제하기' onclick='deleteCard(" + no + ")' style='position: absolute; top: 10px; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
+                        var modify_btn = $('<button type="button" class="btn btn-outline-secondary" style="position: absolute; bottom: 10px; right: 10px;" onclick="modifyCard(' + no + ');">수정</button>');
                         var card_title = $('<h4 class="card-title">' + title + '</h4>');
                         tag = tag.replace(/;/gi, ", ");
                         tag = tag.substring(0, tag.length-2);
@@ -75,6 +76,7 @@
                         
                         if (is_admin == 1) {
                             delete_btn.appendTo(card_body);
+                            modify_btn.appendTo(card_body);
                         }
                         card_title.appendTo(card_body);
                         card_subtitle.appendTo(card_body);
