@@ -33,6 +33,16 @@
                 $('#searchField').val('');
             }
             
+            function show_content(no) {
+                $('p[no=' + no + ']').show();
+                $('div[no=' + no + ']').attr("onclick", "hide_content(" + no + ")");
+            }
+            
+            function hide_content(no) {
+                $('p[no=' + no + ']').hide();
+                $('div[no=' + no + ']').attr("onclick", "show_content(" + no + ")");
+            }
+            
             function loadContents(keyWord) {
                 $.ajax({
                     type: "GET",
@@ -48,14 +58,14 @@
                         var date = data.data[i].date;
                         var tag = data.data[i].tag;
                         
-                        var card = $('<div no=' + no + ' class="card" style="width: 80vw;"></div>');
+                        var card = $('<div no=' + no + ' onclick="show_content(' + no + ')" class="card list-group-item-action" style="width: 80vw;"></div>');
                         var card_body = $('<div class="card-body"></div>');
-                        var delete_btn = $("<button onclick='deleteCard(" + no + ")'} style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
+                        var delete_btn = $("<button onclick='deleteCard(" + no + ")' style='position: absolute; right: 10px;' type='button' class='btn-close' aria-label='Close'></button>");
                         var card_title = $('<h4 class="card-title">' + title + '</h4>');
                         tag = tag.replace(/;/gi, ", ");
                         tag = tag.substring(0, tag.length-2);
                         var card_subtitle = $('<h6 class="card-subtitle mb-2 text-muted">' + tag + '</h6>')
-                        var content_body = $('<p>' + content + '</p>');
+                        var content_body = $('<p no=' + no + '>' + content + '</p>');
                         var card_text = $('<p class="card-text">' + user_name + ' - ' + date + '</p>');
                         
                         var is_admin = <?php 
@@ -69,6 +79,7 @@
                         card_title.appendTo(card_body);
                         card_subtitle.appendTo(card_body);
                         content_body.appendTo(card_body);
+                        content_body.hide();
                         card_text.appendTo(card_body);
                         card_body.appendTo(card);
                         card.appendTo($('.main-view'));
