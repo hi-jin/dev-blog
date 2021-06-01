@@ -43,6 +43,9 @@ if ($_SESSION['is_admin'] == 1) {
                     $('#text-editor').val($('#text-editor-div').html());
                     var tags_str = ""
                     for (var i = 0; i < tags.length; i++) {
+                        if (tags[i].trim() == "") {
+                            continue;
+                        }
                         tags_str += tags[i] + ";";
                     }
                     $('#tag').val(tags_str);
